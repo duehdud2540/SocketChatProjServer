@@ -13,7 +13,7 @@ namespace SocketChatServer
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            builder.Services.AddGrpc();
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
@@ -69,7 +69,7 @@ namespace SocketChatServer
 
             app.UseAuthorization();
 
-
+            app.MapGrpcService<SocketChatServer.Login.Controller.AuthServiceImpl>();
             app.MapControllers();
 
             app.Run();
