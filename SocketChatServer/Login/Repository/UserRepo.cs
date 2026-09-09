@@ -13,7 +13,7 @@ namespace SocketChatServer.Login.Repository
             _dbContext = dbContext;
         }
         // [TODO 1] 유저 ID로 단건 조회
-        public async Task<User?> GetUserByIdAsync(string userId)
+        public async Task<User?> GetUserRepoAsync(string userId)
         {
             using var connection = _dbContext.CreateConnection();
             const string sql = @"
@@ -32,14 +32,13 @@ namespace SocketChatServer.Login.Repository
             return await connection.QuerySingleOrDefaultAsync<User>(sql, new { UserId = userId });
         }
         // [TODO 2] 신규 회원 등록
-        public async Task<bool> CreateUserAsync(User user)
+        public async Task<bool> CreateUserAsync(CreateUserRequest user)
         {
             using var connection = _dbContext.CreateConnection();
 
             const string sql = @"
                     INSERT INTO USERS (user_uuid, ID, PASSWORD, NAME, NICK_NAME, STATE, BIRTH_DATE, CREATE_AT)
                     VALUES (:UserGuid, :Id, :password, :Name, :nickName, :State, :birtDate, :createAt)";
-
             // TODO: ExecuteAsync()를 실행하고 성공 row 수가 1 이상인지 확인해보세요.
             return await connection.ExecuteAsync(sql) == 1;
         }
